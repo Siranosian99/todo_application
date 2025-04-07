@@ -44,7 +44,7 @@ class NotificationMethod {
       tz.TZDateTime.from(scheduledDateTime, tz.local),
       platformChannelSpecifics,
       androidAllowWhileIdle: true,
-      androidScheduleMode: AndroidScheduleMode.exact,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
     );

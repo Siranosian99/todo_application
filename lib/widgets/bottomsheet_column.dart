@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_application/logics/textfield_remover.dart';
+import 'package:todo_application/widgets/textFormAddTask.dart';
 import '../logics/time_date.dart';
 import 'alert_camera_gallery.dart';
 import '../logics/image_picker.dart';
@@ -72,13 +74,13 @@ class _BottomSheetColumnState extends State<BottomSheetColumn> {
                     borderRadius: BorderRadius.circular(15),
                     child: todo.photoPath != null
                         ? Image.file(
-                      File(todo.photoPath!),
-                      fit: BoxFit.cover,
-                    )
+                            File(todo.photoPath!),
+                            fit: BoxFit.cover,
+                          )
                         : Image.asset(
-                      todo.networkImageUrl,
-                      fit: BoxFit.cover,
-                    ),
+                            todo.networkImageUrl,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
                 // Positioned floating button with animation
@@ -118,9 +120,9 @@ class _BottomSheetColumnState extends State<BottomSheetColumn> {
             SizedBox(
               height: size,
             ),
-            TextFormField(
-              textInputAction: TextInputAction.next,
-              controller: widget.taskController,
+
+            TextformAdd(
+              input: TextInputAction.next,
               decoration: InputDecoration(
                 suffixIcon: IconButton(
                   onPressed: () {
@@ -148,6 +150,7 @@ class _BottomSheetColumnState extends State<BottomSheetColumn> {
                   ),
                 ),
               ),
+              controller: widget.taskController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter a task';
@@ -158,9 +161,8 @@ class _BottomSheetColumnState extends State<BottomSheetColumn> {
             SizedBox(
               height: size,
             ),
-            TextFormField(
-              textInputAction: TextInputAction.next,
-              controller: widget.descpController,
+            TextformAdd(
+              input: TextInputAction.next,
               decoration: InputDecoration(
                 hintText: 'Enter your description here',
                 prefixIcon: Icon(FontAwesome.tasks),
@@ -182,6 +184,7 @@ class _BottomSheetColumnState extends State<BottomSheetColumn> {
                   ),
                 ),
               ),
+              controller: widget.descpController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter a description';
@@ -192,57 +195,46 @@ class _BottomSheetColumnState extends State<BottomSheetColumn> {
             SizedBox(
               height: size,
             ),
-            TextFormField(
-              textInputAction: TextInputAction.next,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a Date';
-                }
-                return null;
-              },
-              onTap: () {
-                date_time.displayDatePicker(context, widget.dateController);
-              },
-              controller: widget.dateController,
-              readOnly: true,
-              decoration: InputDecoration(
-                hintText: 'Enter task date here',
-                prefixIcon: Icon(FontAwesome.calendar_times_o),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.blue,
-                    width: 2.0,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.green,
-                    width: 2.0,
-                  ),
-                ),
-              ),
-            ),
+            // TextFormField(
+            //   textInputAction: TextInputAction.next,
+            //   validator: (value) {
+            //     if (value == null || value.isEmpty) {
+            //       return 'Please enter a Date';
+            //     }
+            //     return null;
+            //   },
+            //   onTap: () {
+            //     date_time.displayDatePicker(context, widget.dateController);
+            //   },
+            //   controller: widget.dateController,
+            //   readOnly: true,
+            //   decoration: InputDecoration(
+            //     hintText: 'Enter task date here',
+            //     prefixIcon: Icon(FontAwesome.calendar_times_o),
+            //     border: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(10.0),
+            //     ),
+            //     enabledBorder: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(10.0),
+            //       borderSide: BorderSide(
+            //         color: Colors.blue,
+            //         width: 2.0,
+            //       ),
+            //     ),
+            //     focusedBorder: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(10.0),
+            //       borderSide: BorderSide(
+            //         color: Colors.green,
+            //         width: 2.0,
+            //       ),
+            //     ),
+            //   ),
+            // ),
             SizedBox(
               height: size,
             ),
-            TextFormField(
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a Time';
-                }
-                return null;
-              },
-              textInputAction: TextInputAction.done,
-              onTap: () {
-                date_time.displayTimePicker(context, widget.timeController);
-              },
-              controller: widget.timeController,
-              readOnly: true,
+            TextformAdd(
+              input: TextInputAction.done,
               decoration: InputDecoration(
                 hintText: 'Enter task time here',
                 prefixIcon: Icon(FontAwesome.clock),
@@ -264,6 +256,17 @@ class _BottomSheetColumnState extends State<BottomSheetColumn> {
                   ),
                 ),
               ),
+              controller: widget.timeController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a Time';
+                }
+                return null;
+              },
+              onTap: () {
+                date_time.displayTimePicker(context, widget.timeController);
+              },
+              readOnly: true,
             ),
             SizedBox(
               height: size,
@@ -289,10 +292,11 @@ class _BottomSheetColumnState extends State<BottomSheetColumn> {
                       widget.taskController.text);
                   todo.generateUniqueId();
                   Navigator.pop(context);
-                  widget.taskController.clear();
-                  widget.descpController.clear();
-                  widget.timeController.clear();
-                  widget.dateController.clear();
+                  TextFieldRemover().removeTextFields(
+                      widget.taskController,
+                      widget.descpController,
+                      widget.timeController,
+                      widget.dateController);
                   todo.clearImg();
                 }
               },

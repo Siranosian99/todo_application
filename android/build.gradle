@@ -1,3 +1,19 @@
+buildscript {
+    ext.kotlin_version = '2.1.10'  // Ensure correct Kotlin version
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.google.gms:google-services:4.4.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+plugins {
+    id 'com.google.gms.google-services' version '4.4.2' apply false
+    id 'com.android.application' version '8.2.2' apply false
+}
 allprojects {
     repositories {
         google()

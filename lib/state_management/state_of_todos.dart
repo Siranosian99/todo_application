@@ -93,8 +93,8 @@ class TodoState extends ChangeNotifier {
     if (image != null) {
       photoPath = image.path;
       notifyListeners();
-      tasks[index].photoPath=photoPath!;
-      }
+      tasks[index].photoPath = photoPath!;
+    }
   }
 
   void checkThemes(bool value) {
@@ -158,6 +158,7 @@ class TodoState extends ChangeNotifier {
     saveTasks();
     notifyListeners();
   }
+
   void changeArchiveStatus(int index) {
     archive_tasks[index].isDone = !archive_tasks[index].isDone;
     saveTasks();
@@ -223,7 +224,8 @@ class TodoState extends ChangeNotifier {
       if (currentTask.task != updatedTask.task ||
           currentTask.description != updatedTask.description ||
           currentTask.date != updatedTask.date ||
-          currentTask.time != updatedTask.time || currentTask.photoPath !=updatedTask.photoPath) {
+          currentTask.time != updatedTask.time ||
+          currentTask.photoPath != updatedTask.photoPath) {
         tasks[index] = updatedTask;
 
         NotificationMethod.flutterLocalNotificationsPlugin
@@ -245,32 +247,34 @@ class TodoState extends ChangeNotifier {
   }
 
   Future<void> loadAuthState() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     requiresAuth = prefs.getBool('requiresAuth') ?? false;
     notifyListeners();
   }
 
   Future<void> saveAuthStateArch() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('authArchive', authArchive);
   }
 
   Future<void> loadAuthStateArchive() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     authArchive = prefs.getBool('authArchive') ?? false;
     notifyListeners();
   }
 
   Future<void> saveAuthState() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('requiresAuth', requiresAuth);
   }
+
   Future<void> saveThemeState() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('ThemeState', checkTheme);
   }
+
   Future<void> loadThemeState() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     checkTheme = prefs.getBool('ThemeState') ?? false;
     notifyListeners();
   }

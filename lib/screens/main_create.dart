@@ -5,8 +5,11 @@ import 'package:intl/intl.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_application/logics/authenticator.dart';
+import 'package:todo_application/show_dialog/show_dailog_main.dart';
 import '../logics/date_time_convertor.dart';
+import '../logics/textfield_remover.dart';
 import '../notification/notifciation_method.dart';
+import '../show_dialog/show_dialog_edit.dart';
 import '../state_management/state_of_todos.dart';
 import '../widgets/bottomsheet_column.dart';
 import '../widgets/detailed_container.dart';
@@ -21,17 +24,17 @@ class MainCreate extends StatefulWidget {
   State<MainCreate> createState() => _MainCreateState();
 }
 
-class _MainCreateState extends State<MainCreate> {
+class _MainCreateState extends State<MainCreate> with ShowMainDialog,ShowEditDialog{
   int selectedIndex = 0; // Updated variable name for consistency
   Color tColor = Colors.white;
   Color fColor = Colors.black;
   String nodata = "There is No Tasks";
-
+  String imageLink = "images/todo1.jpg";
+  String saveTask = "Save";
+  String titleTxt = "Todo's List";
   @override
   Widget build(BuildContext context) {
-    String imageLink = "images/todo1.jpg";
-    String saveTask = "Save";
-    String titleTxt = "Todo's List";
+
     return Consumer<TodoState>(
       builder: (context, todo, child) {
         bool check = todo.checkData();
@@ -78,11 +81,7 @@ class _MainCreateState extends State<MainCreate> {
                   );
                 },
               ).whenComplete(() {
-                // This runs when the bottom sheet is closed by the back button or other means
-                todo.taskController.clear();
-                todo.descpController.clear();
-                todo.timeController.clear();
-                todo.dateController.clear();
+                TextFieldRemover().removeTextFields(todo.taskController, todo.descpController,  todo.timeController, todo.dateController);
                 todo.clearImg();// Clear the TextField
               });
             },
@@ -98,133 +97,10 @@ class _MainCreateState extends State<MainCreate> {
                   child: ListView.builder(
                     itemBuilder: (context, index) => GestureDetector(
                       onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                                child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context)
-                                          .pop(); // Close the dialog when tapped
-                                    },
-                                    child: DetailedTaskContainer(
-                                      index: index,
-                                    )));
-                          },
-                        );
+                       showMainCustomDialog(context: context, index: index);
                       },
                       onLongPress: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Dialog(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              elevation: 16,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      "Task Options",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(height: 20),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Column(
-                                          children: [
-                                            IconButton(
-                                              icon: Icon(Icons.edit, color: Colors.blue),
-                                              onPressed: () {
-                                                Navigator.pop(context); // Close the dialog
-                                                showModalBottomSheet(
-                                                  enableDrag: false,
-                                                  isDismissible: false,
-                                                  isScrollControlled: false,
-                                                  context: context,
-                                                  builder: (BuildContext context) {
-                                                    return Padding(
-                                                      padding: const EdgeInsets.all(15) +  MediaQuery.of(context).viewInsets,
-                                                      child: SingleChildScrollView(
-                                                        child: EditBottomSheet(
-                                                          photoPath: todo.tasks[index].photoPath,
-                                                          index: index,
-                                                          id: todo.tasks[index].id,
-                                                          descpController: todo.descpController,
-                                                          taskController: todo.taskController,
-                                                          dateController: todo.dateController,
-                                                          timeController: todo.timeController,
-                                                          save_task: saveTask,
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                ).whenComplete(() {
-                                                  // This runs when the bottom sheet is closed by the back button or other means
-                                                  todo.taskController.clear();
-                                                  todo.descpController.clear();
-                                                  todo.timeController.clear();
-                                                  todo.dateController.clear();
-                                                  todo.clearImg();// Clear the TextField
-                                                });
-                                              },
-                                            ),
-                                            Text("Edit"),
-                                          ],
-                                        ),
-                                        Column(
-                                          children: [
-                                            IconButton(
-                                              icon: Icon(Icons.delete, color: Colors.red),
-                                              onPressed: () {
-                                                todo.removeFromList(index);
-                                                Navigator.pop(context); // Close the dialog
-                                              },
-                                            ),
-                                            Text("Delete"),
-                                          ],
-                                        ),
-                                        Column(
-                                          children: [
-                                            IconButton(
-                                              icon: Icon(Icons.archive, color: Colors.green),
-                                              onPressed: () {
-                                                todo.addToArchive(todo.tasks[index], index);
-                                                Navigator.pop(context); // Close the dialog
-                                              },
-                                            ),
-                                            Text("Archive"),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 10),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: TextButton.icon(
-                                        icon: Icon(Icons.close, color: Colors.grey),
-                                        label: Text(
-                                          "Close",
-                                          style: TextStyle(color: Colors.grey),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.pop(context); // Close the dialog
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
+                        showEditDialog(context: context, todo: todo, index: index, saveTask: saveTask);
                       },
                       onDoubleTap: () {
                         todo.changeStatus(index);

@@ -4,24 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_application/format_converter/format_date_time_convertor.dart';
 
 import '../state_management/state_of_todos.dart';
 
-class ArchiveScreen extends StatelessWidget {
+class ArchiveScreen extends StatelessWidget with formatConvertor {
   const ArchiveScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    String formatTimeOfDay(TimeOfDay time) {
-      final now = DateTime.now();
-      final dt = DateTime(now.year, now.month, now.day, time.hour, time.minute);
-      final formattedTime = DateFormat.Hm().format(dt); // Using 24-hour format
-      return formattedTime;
-    }
 
-    String formatDate(DateTime date) {
-      return DateFormat('yyyy-MM-dd').format(date); // Change the format as needed
-    }
     double size = 30;
     String title_txt1 = "Archived notes";
     String title_txt = "Todo's List";

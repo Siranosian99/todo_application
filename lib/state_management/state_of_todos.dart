@@ -26,6 +26,7 @@ class TodoState extends ChangeNotifier {
   bool requiresAuth = false;
   bool authArchive = true;
   String? photoPath;
+  SharedPreferences? prefs;
   final TextEditingController searchController = TextEditingController();
   final TextEditingController descpController = TextEditingController();
   final TextEditingController taskController = TextEditingController();
@@ -33,12 +34,19 @@ class TodoState extends ChangeNotifier {
   final TextEditingController timeController = TextEditingController();
 
   TodoState() {
-    loadThemeState();
-    loadAuthState();
-    loadAuthStateArchive();
+    _initialize();
+  }
+  Future<void> _initialize() async {
+    await init();
+    await loadThemeState();
+    await loadAuthState();
+    await loadAuthStateArchive();
     tz.initializeTimeZones();
-    loadTasks();
-    loadArchiveTasks();
+    await loadTasks();
+    await loadArchiveTasks();
+  }
+  Future<void> init() async {
+    prefs = await SharedPreferences.getInstance();
   }
 
   void setSelectedIndex(int index) {
@@ -113,8 +121,7 @@ class TodoState extends ChangeNotifier {
   }
 
   void searchData(String query) async {
-    final prefs = await SharedPreferences.getInstance();
-    List<String>? taskList = prefs.getStringList('tasks');
+    List<String>? taskList = prefs?.getStringList('tasks');
     if (query.isEmpty) {
       await loadTasks();
     } else if (taskList != null) {
@@ -166,22 +173,20 @@ class TodoState extends ChangeNotifier {
   }
 
   Future<void> saveTasks() async {
-    final prefs = await SharedPreferences.getInstance();
     List<String> taskList =
         tasks.map((task) => json.encode(task.toJson())).toList();
-    prefs.setStringList('tasks', taskList);
+    prefs?.setStringList('tasks', taskList);
   }
 
   Future<void> saveArchiveTasks() async {
-    final prefs = await SharedPreferences.getInstance();
+
     List<String> archiveTaskList =
         archive_tasks.map((task) => json.encode(task.toJson())).toList();
-    prefs.setStringList('archive_tasks', archiveTaskList);
+    prefs?.setStringList('archive_tasks', archiveTaskList);
   }
 
   Future<void> loadTasks() async {
-    final prefs = await SharedPreferences.getInstance();
-    List<String>? taskList = prefs.getStringList('tasks');
+    List<String>? taskList = prefs?.getStringList('tasks');
     if (taskList != null) {
       tasks = taskList
           .map((task) => TodoModel.fromJson(json.decode(task)))
@@ -191,8 +196,7 @@ class TodoState extends ChangeNotifier {
   }
 
   Future<void> loadArchiveTasks() async {
-    final prefs = await SharedPreferences.getInstance();
-    List<String>? archiveTaskList = prefs.getStringList('archive_tasks');
+    List<String>? archiveTaskList = prefs?.getStringList('archive_tasks');
     if (archiveTaskList != null) {
       archive_tasks = archiveTaskList
           .map((task) => TodoModel.fromJson(json.decode(task)))
@@ -247,35 +251,31 @@ class TodoState extends ChangeNotifier {
   }
 
   Future<void> loadAuthState() async {
-    final prefs = await SharedPreferences.getInstance();
-    requiresAuth = prefs.getBool('requiresAuth') ?? false;
+    requiresAuth = prefs?.getBool('requiresAuth') ?? false;
     notifyListeners();
   }
 
   Future<void> saveAuthStateArch() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('authArchive', authArchive);
+    await prefs?.setBool('authArchive', authArchive);
   }
 
   Future<void> loadAuthStateArchive() async {
-    final prefs = await SharedPreferences.getInstance();
-    authArchive = prefs.getBool('authArchive') ?? false;
+    authArchive = prefs?.getBool('authArchive') ?? false;
     notifyListeners();
   }
 
   Future<void> saveAuthState() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('requiresAuth', requiresAuth);
+    await prefs?.setBool('requiresAuth', requiresAuth);
   }
 
   Future<void> saveThemeState() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('ThemeState', checkTheme);
+    if (prefs == null) return;
+    await prefs!.setBool('ThemeState', checkTheme);
   }
 
   Future<void> loadThemeState() async {
-    final prefs = await SharedPreferences.getInstance();
-    checkTheme = prefs.getBool('ThemeState') ?? false;
+    if (prefs == null) return;
+    checkTheme = prefs!.getBool('ThemeState') ?? false;
     notifyListeners();
   }
 }

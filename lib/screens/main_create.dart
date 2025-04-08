@@ -6,6 +6,7 @@ import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_application/logics/authenticator.dart';
 import 'package:todo_application/show_dialog/show_dailog_main.dart';
+import 'package:todo_application/widgets/switch_themeslottie.dart';
 import '../logics/date_time_convertor.dart';
 import '../logics/textfield_remover.dart';
 import '../notification/notifciation_method.dart';
@@ -53,7 +54,7 @@ class _MainCreateState extends State<MainCreate> with ShowMainDialog,ShowEditDia
             actions: [
               Padding(
                 padding: const EdgeInsets.all(5.0),
-                child: SwitchThemes(),
+                child: SwitchTeamLottie(),
               )
             ],
           ),

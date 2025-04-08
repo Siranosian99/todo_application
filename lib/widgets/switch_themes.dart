@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../state_management/state_of_todos.dart';
@@ -16,6 +17,7 @@ class SwitchThemes extends StatelessWidget {
     return LiteRollingSwitch(
       value: todo.checkTheme,
       onChanged: (value) {
+
         todo.checkThemes(value);
       },
       textOn: 'Dark Mode',

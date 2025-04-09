@@ -1,8 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:local_auth/local_auth.dart';
-import 'package:provider/provider.dart';
 
-import '../state_management/state_of_todos.dart';
+import 'package:local_auth/local_auth.dart';
 
 class AuthService {
   static final LocalAuthentication _auth = LocalAuthentication();
@@ -15,6 +12,7 @@ class AuthService {
       }
 
       bool canCheckBiometrics = await _auth.canCheckBiometrics;
+      bool isDeviceSecure = await _auth.isDeviceSupported() || canCheckBiometrics;
       bool hasBiometricEnrolled = await _auth.getAvailableBiometrics().then(
             (biometrics) => biometrics.isNotEmpty,
       );
@@ -48,4 +46,19 @@ class AuthService {
       return false;
     }
   }
+  static Future<bool> isDeviceSecure() async {
+    final LocalAuthentication auth = LocalAuthentication();
+
+    try {
+      bool canCheckBiometrics = await auth.canCheckBiometrics;
+      bool isDeviceSupported = await auth.isDeviceSupported();
+      bool isDeviceSecure = await auth.isDeviceSupported() || canCheckBiometrics;
+
+      return isDeviceSecure;
+    } catch (e) {
+      print("Error checking device security: $e");
+      return false;
+    }
+  }
+
 }

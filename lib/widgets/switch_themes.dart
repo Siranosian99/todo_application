@@ -17,7 +17,6 @@ class SwitchThemes extends StatelessWidget {
     return LiteRollingSwitch(
       value: todo.checkTheme,
       onChanged: (value) {
-
         todo.checkThemes(value);
       },
       textOn: 'Dark Mode',

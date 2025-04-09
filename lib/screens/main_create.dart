@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_application/logics/authenticator.dart';
 import 'package:todo_application/show_dialog/show_dailog_main.dart';
 import 'package:todo_application/widgets/switch_themeslottie.dart';
-import '../logics/date_time_convertor.dart';
+import '../format_converter/date_time_convertor.dart';
 import '../logics/textfield_remover.dart';
 import '../notification/notifciation_method.dart';
 import '../show_dialog/show_dialog_edit.dart';
@@ -33,6 +34,8 @@ class _MainCreateState extends State<MainCreate> with ShowMainDialog,ShowEditDia
   String imageLink = "images/todo1.jpg";
   String saveTask = "Save";
   String titleTxt = "Todo's List";
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -54,7 +57,7 @@ class _MainCreateState extends State<MainCreate> with ShowMainDialog,ShowEditDia
             actions: [
               Padding(
                 padding: const EdgeInsets.all(5.0),
-                child: SwitchTeamLottie(),
+                child: SwitchTeamLottie(isPressed:todo.checkTheme),
               )
             ],
           ),

@@ -47,6 +47,7 @@ class _FirstScreenState extends State<FirstScreen> {
           TextButton(
               onPressed: () async{
                 bool isAuthenticated = await AuthService.authenticate( Provider.of<TodoState>(context,listen: false).requiresAuth);
+                print(isAuthenticated);
               if (isAuthenticated) {
                 Navigator.push(
                   context,
@@ -54,6 +55,16 @@ class _FirstScreenState extends State<FirstScreen> {
                     builder: (context) => HomeScreen(),
                   ),
                 );
+              }
+              else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Secure Problem'),
+                    duration: Duration(seconds: 2),
+                    backgroundColor: Colors.blue,
+                  ),
+                );
+
               }
               },
               child: Row(

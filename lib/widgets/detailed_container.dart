@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:provider/provider.dart';
 
-import '../logics/date_time_convertor.dart';
+import '../format_converter/date_time_convertor.dart';
 import '../state_management/state_of_todos.dart';
 class DetailedTaskContainer extends StatelessWidget {
   int index;

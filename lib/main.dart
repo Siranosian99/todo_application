@@ -4,7 +4,7 @@ import 'package:todo_application/screens/first_screen.dart';
 import 'package:todo_application/screens/home_screen.dart';
 import 'package:todo_application/screens/main_create.dart';
 import 'package:todo_application/state_management/state_of_todos.dart';
-import 'package:todo_application/theme/dark_light.dart';
+import 'package:todo_application/theme/themes.dart';
 import 'package:todo_application/widgets/switch_themeslottie.dart';
 
 import 'notification/notifciation_method.dart';

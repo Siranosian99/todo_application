@@ -7,8 +7,11 @@ import '../state_management/state_of_todos.dart';
 class ThemeSwitch {
   static ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
+    inputDecorationTheme: InputDecorationTheme(
+      labelStyle: TextStyle(color: Colors.red),
+    ),
     appBarTheme: AppBarTheme(
-      backgroundColor: Color.fromRGBO(225, 213, 67, 0.8),
+      backgroundColor: Color.fromRGBO(14, 89, 141, 0.8),
       titleTextStyle: GoogleFonts.merriweather(
         color: Colors.black,
         fontSize: 20,
@@ -27,16 +30,16 @@ class ThemeSwitch {
         fontWeight: FontWeight.bold,
       ),
       bodyLarge: GoogleFonts.merriweather(
-        color: Colors.white,
+        color: Colors.black,
         fontSize: 18,
       ),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: Color.fromRGBO(54, 142, 197, 0.8),
+      backgroundColor: Color.fromRGBO(0, 255, 136, 1),
       foregroundColor: Colors.black,
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: Color.fromRGBO(225, 213, 67, 0.8),
+      backgroundColor: Color.fromRGBO(14, 89, 141, 0.8),
       selectedIconTheme: IconThemeData(
         color: Colors.black,
         size: 30,
@@ -56,12 +59,13 @@ class ThemeSwitch {
         color: Colors.white10,
       ),
     ),
+
   );
 
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     appBarTheme: AppBarTheme(
-      backgroundColor: Color.fromRGBO(8, 255, 247, 0.8),
+      backgroundColor: Color.fromRGBO(139, 215, 215, 0.8),
       titleTextStyle: GoogleFonts.merriweather(
         color: Colors.black,
         fontSize: 20,
@@ -90,7 +94,7 @@ class ThemeSwitch {
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
 
-      backgroundColor:Color.fromRGBO(8, 255, 247, 0.8),
+      backgroundColor:Color.fromRGBO(139, 215, 215, 0.8),
       selectedIconTheme: IconThemeData(
         color: Colors.white,
         size: 30,

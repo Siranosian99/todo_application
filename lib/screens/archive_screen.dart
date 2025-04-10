@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_application/format_converter/format_date_time_convertor.dart';
 
+import '../logics/authenticator.dart';
 import '../state_management/state_of_todos.dart';
 
 class ArchiveScreen extends StatelessWidget with formatConvertor {
@@ -27,9 +28,9 @@ class ArchiveScreen extends StatelessWidget with formatConvertor {
             title: Text(title_txt),
             actions: [
               IconButton(
-                  icon: todo.authArchive
+                  icon: AuthService.checker ? todo.authArchive
                       ? Icon(FontAwesome5.lock)
-                      : Icon(FontAwesome5.unlock),
+                      : Icon(FontAwesome5.unlock): Text("NO"),
                   onPressed: ()  {
                     todo.toggleAuthArchive();
                     print(todo.authArchive);

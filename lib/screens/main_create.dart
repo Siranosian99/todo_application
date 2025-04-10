@@ -45,12 +45,13 @@ class _MainCreateState extends State<MainCreate> with ShowMainDialog,ShowEditDia
         return Scaffold(
           appBar: AppBar(
             leading: IconButton(
-                icon: todo.requiresAuth
+                icon: AuthService.checker ? todo.requiresAuth
                     ? Icon(FontAwesome5.lock)
-                    : Icon(FontAwesome5.unlock),
+                    : Icon(FontAwesome5.unlock): Text("NO"),
                 onPressed: () async {
                   todo.toggleAuthApp();
                   print(todo.requiresAuth);
+
                 }),
             automaticallyImplyLeading: false,
             title: Text(titleTxt),

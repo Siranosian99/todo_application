@@ -4,6 +4,7 @@ import 'package:local_auth/local_auth.dart';
 class AuthService {
   static final LocalAuthentication _auth = LocalAuthentication();
   static AuthService authService = AuthService();
+  static bool checker =false;
 
   static Future<bool> authenticate(bool auth) async {
     try {
@@ -12,7 +13,7 @@ class AuthService {
       }
 
       bool canCheckBiometrics = await _auth.canCheckBiometrics;
-      bool isDeviceSecure = await _auth.isDeviceSupported() || canCheckBiometrics;
+
       bool hasBiometricEnrolled = await _auth.getAvailableBiometrics().then(
             (biometrics) => biometrics.isNotEmpty,
       );
@@ -46,19 +47,19 @@ class AuthService {
       return false;
     }
   }
-  static Future<bool> isDeviceSecure() async {
-    final LocalAuthentication auth = LocalAuthentication();
 
+
+ static Future<bool> hasLocalAuthentication() async {
     try {
-      bool canCheckBiometrics = await auth.canCheckBiometrics;
-      bool isDeviceSupported = await auth.isDeviceSupported();
-      bool isDeviceSecure = await auth.isDeviceSupported() || canCheckBiometrics;
+      bool biometricsAvailable = await _auth.canCheckBiometrics;
+      bool deviceSupported = await _auth.isDeviceSupported();
 
-      return isDeviceSecure;
+      return checker= deviceSupported;
     } catch (e) {
-      print("Error checking device security: $e");
+      print('Error checking local auth: $e');
       return false;
     }
   }
+
 
 }

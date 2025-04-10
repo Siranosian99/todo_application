@@ -21,6 +21,8 @@ class _FirstScreenState extends State<FirstScreen> {
     super.initState();
     context.read<TodoState>().loadThemeState();
   }
+
+
   @override
   Widget build(BuildContext context) {
     int font_small = 25;
@@ -47,7 +49,7 @@ class _FirstScreenState extends State<FirstScreen> {
           TextButton(
               onPressed: () async{
                 bool isAuthenticated = await AuthService.authenticate( Provider.of<TodoState>(context,listen: false).requiresAuth);
-                print(isAuthenticated);
+                print(AuthService.checker);
               if (isAuthenticated) {
                 Navigator.push(
                   context,
@@ -56,7 +58,7 @@ class _FirstScreenState extends State<FirstScreen> {
                   ),
                 );
               }
-              else {
+              else if(AuthService.checker){
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Secure Problem'),

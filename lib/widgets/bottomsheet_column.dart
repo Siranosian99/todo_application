@@ -195,41 +195,41 @@ class _BottomSheetColumnState extends State<BottomSheetColumn> {
             SizedBox(
               height: size,
             ),
-            // TextFormField(
-            //   textInputAction: TextInputAction.next,
-            //   validator: (value) {
-            //     if (value == null || value.isEmpty) {
-            //       return 'Please enter a Date';
-            //     }
-            //     return null;
-            //   },
-            //   onTap: () {
-            //     date_time.displayDatePicker(context, widget.dateController);
-            //   },
-            //   controller: widget.dateController,
-            //   readOnly: true,
-            //   decoration: InputDecoration(
-            //     hintText: 'Enter task date here',
-            //     prefixIcon: Icon(FontAwesome.calendar_times_o),
-            //     border: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(10.0),
-            //     ),
-            //     enabledBorder: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(10.0),
-            //       borderSide: BorderSide(
-            //         color: Colors.blue,
-            //         width: 2.0,
-            //       ),
-            //     ),
-            //     focusedBorder: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(10.0),
-            //       borderSide: BorderSide(
-            //         color: Colors.green,
-            //         width: 2.0,
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            TextFormField(
+              textInputAction: TextInputAction.next,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a Date';
+                }
+                return null;
+              },
+              onTap: () {
+                date_time.displayDatePicker(context, widget.dateController);
+              },
+              controller: widget.dateController,
+              readOnly: true,
+              decoration: InputDecoration(
+                hintText: 'Enter task date here',
+                prefixIcon: Icon(FontAwesome.calendar_times_o),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                    width: 2.0,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.green,
+                    width: 2.0,
+                  ),
+                ),
+              ),
+            ),
             SizedBox(
               height: size,
             ),

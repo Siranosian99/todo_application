@@ -16,9 +16,14 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
+  bool checker=false;
+  void isLocked()async{
+    checker=await AuthService.isDeviceSecure();
+  }
   @override
   void initState() {
     super.initState();
+    isLocked();
     context.read<TodoState>().loadThemeState();
   }
 
@@ -49,8 +54,7 @@ class _FirstScreenState extends State<FirstScreen> {
           TextButton(
               onPressed: () async{
                 bool isAuthenticated = await AuthService.authenticate( Provider.of<TodoState>(context,listen: false).requiresAuth);
-                print(AuthService.checker);
-              if (isAuthenticated) {
+              if ((isAuthenticated && checker) ||(!isAuthenticated && !checker)) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -58,16 +62,7 @@ class _FirstScreenState extends State<FirstScreen> {
                   ),
                 );
               }
-              else if(AuthService.checker){
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Secure Problem'),
-                    duration: Duration(seconds: 2),
-                    backgroundColor: Colors.blue,
-                  ),
-                );
 
-              }
               },
               child: Row(
                 mainAxisSize: MainAxisSize.min,

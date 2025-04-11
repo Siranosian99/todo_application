@@ -9,9 +9,26 @@ import 'package:todo_application/format_converter/format_date_time_convertor.dar
 import '../logics/authenticator.dart';
 import '../state_management/state_of_todos.dart';
 
-class ArchiveScreen extends StatelessWidget with formatConvertor {
-  const ArchiveScreen({super.key});
+class ArchiveScreen extends StatefulWidget  {
+   ArchiveScreen({super.key});
 
+  @override
+  State<ArchiveScreen> createState() => _ArchiveScreenState();
+}
+
+class _ArchiveScreenState extends State<ArchiveScreen> with formatConvertor{
+  bool checker=false;
+  void isLocked()async{
+    checker=await AuthService.isDeviceSecure();
+    setState(() {
+      checker;
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+    isLocked();
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -26,15 +43,15 @@ class ArchiveScreen extends StatelessWidget with formatConvertor {
           appBar: AppBar(
             automaticallyImplyLeading: false,
             title: Text(title_txt),
-            actions: [
+            actions: [checker ?
               IconButton(
-                  icon: AuthService.checker ? todo.authArchive
+                  icon:  todo.authArchive
                       ? Icon(FontAwesome5.lock)
-                      : Icon(FontAwesome5.unlock): Text("NO"),
+                      : Icon(FontAwesome5.unlock),
                   onPressed: ()  {
                     todo.toggleAuthArchive();
                     print(todo.authArchive);
-                  }),
+                  }):Text("NO"),
 
             ],
           ),

@@ -25,6 +25,7 @@ class TodoState extends ChangeNotifier {
   String recognizedText = '';
   bool requiresAuth = false;
   bool authArchive = true;
+  bool checker=false;
   String? photoPath;
   SharedPreferences? prefs;
   final TextEditingController searchController = TextEditingController();
@@ -37,6 +38,7 @@ class TodoState extends ChangeNotifier {
     _initialize();
   }
   Future<void> _initialize() async {
+    await isLocked();
     await init();
     await loadThemeState();
     await loadAuthState();
@@ -49,6 +51,9 @@ class TodoState extends ChangeNotifier {
     prefs = await SharedPreferences.getInstance();
   }
 
+  Future<void> isLocked()async{
+    checker=await AuthService.isDeviceSecure();
+  }
   void setSelectedIndex(int index) {
     selectedIndex = index;
     notifyListeners(); // Notify listeners when the index changes
@@ -57,7 +62,7 @@ class TodoState extends ChangeNotifier {
   Future<void> changeIndex(int index, PageController pageController) async {
     if (index == 1) {
       bool isAuthenticated = await AuthService.authenticate(authArchive);
-      if (isAuthenticated) {
+      if ((isAuthenticated && checker)||(!isAuthenticated && !checker)) {
         // Change the page using the PageController
         pageController.jumpToPage(index);
         selectedIndex = index;

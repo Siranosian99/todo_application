@@ -536,6 +536,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.18.1"
+  is_lock_screen2:
+    dependency: "direct main"
+    description:
+      name: is_lock_screen2
+      sha256: "9a3381b3c46ddb132ca2d88c3dfb690e8ac4d2ced60d9173bd3cc16e88bbe7f6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.3"
   js:
     dependency: transitive
     description:

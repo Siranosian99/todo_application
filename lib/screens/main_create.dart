@@ -26,7 +26,8 @@ class MainCreate extends StatefulWidget {
   State<MainCreate> createState() => _MainCreateState();
 }
 
-class _MainCreateState extends State<MainCreate> with ShowMainDialog,ShowEditDialog{
+class _MainCreateState extends State<MainCreate>
+    with ShowMainDialog, ShowEditDialog {
   int selectedIndex = 0; // Updated variable name for consistency
   Color tColor = Colors.white;
   Color fColor = Colors.black;
@@ -34,47 +35,63 @@ class _MainCreateState extends State<MainCreate> with ShowMainDialog,ShowEditDia
   String imageLink = "images/todo1.jpg";
   String saveTask = "Save";
   String titleTxt = "Todo's List";
+  bool checker = false;
 
+  void isLocked() async {
+    checker = await AuthService.isDeviceSecure();
+    setState(() {
+      checker;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    isLocked();
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return Consumer<TodoState>(
       builder: (context, todo, child) {
         bool check = todo.checkData();
         return Scaffold(
           appBar: AppBar(
-            leading: IconButton(
-                icon: AuthService.checker ? todo.requiresAuth
-                    ? Icon(FontAwesome5.lock)
-                    : Icon(FontAwesome5.unlock): Text("NO"),
-                onPressed: () async {
-                  todo.toggleAuthApp();
-                  print(todo.requiresAuth);
-
-                }),
+            leading: checker
+                ? IconButton(
+                    icon: todo.requiresAuth
+                        ? Icon(FontAwesome5.lock)
+                        : Icon(FontAwesome5.unlock),
+                    onPressed: () async {
+                      todo.toggleAuthApp();
+                      print(todo.requiresAuth);
+                    })
+                : Text("NO"),
             automaticallyImplyLeading: false,
             title: Text(titleTxt),
             actions: [
               Padding(
                 padding: const EdgeInsets.all(5.0),
-                child: SwitchTeamLottie(isPressed:todo.checkTheme),
+                child: SwitchTeamLottie(isPressed: todo.checkTheme),
               )
             ],
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
           floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add),
             onPressed: () {
+              print(checker);
               showModalBottomSheet(
                 isDismissible: true,
                 context: context,
                 builder: (BuildContext context) {
                   return Padding(
-                    padding: const EdgeInsets.all(15) +  MediaQuery.of(context).viewInsets,
+                    padding: const EdgeInsets.all(15) +
+                        MediaQuery.of(context).viewInsets,
                     child: SingleChildScrollView(
                       child: BottomSheetColumn(
-                        index:-1,
+                        index: -1,
                         id: todo.id,
                         descpController: todo.descpController,
                         taskController: todo.taskController,
@@ -86,86 +103,93 @@ class _MainCreateState extends State<MainCreate> with ShowMainDialog,ShowEditDia
                   );
                 },
               ).whenComplete(() {
-                TextFieldRemover().removeTextFields(todo.taskController, todo.descpController,  todo.timeController, todo.dateController);
-                todo.clearImg();// Clear the TextField
+                TextFieldRemover().removeTextFields(
+                    todo.taskController,
+                    todo.descpController,
+                    todo.timeController,
+                    todo.dateController);
+                todo.clearImg(); // Clear the TextField
               });
             },
           ),
           body: check
               ? Padding(
-            padding: const EdgeInsets.all(25.0),
-            child: Column(
-              children: [
-                SearchBox(searchController: todo.searchController),
-                SizedBox(height: 10),
-                Expanded(
-                  child: ListView.builder(
-                    itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {
-                       showMainCustomDialog(context: context, index: index);
-                      },
-                      onLongPress: () {
-                        showEditDialog(context: context, todo: todo, index: index, saveTask: saveTask);
-                      },
-                      onDoubleTap: () {
-                        todo.changeStatus(index);
-                      },
-                      child: Card(
-                        color: todo.tasks[index].isDone
-                            ? Colors.greenAccent
-                            : Colors.red,
-                        child: ListTile(
-                          leading: todo.tasks[index].photoPath.isNotEmpty
-                              ? Image.file(
-                            File(todo.tasks[index].photoPath),
-                            width: 50,
-                            height: 50,
-                            fit: BoxFit.cover,
-                          )
-                              : Icon(FontAwesome5.hotdog),
-                          title: Text(todo.tasks[index].task),
-                          trailing: Column(
-
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(DateTimeConvert.formatDate(todo.tasks[index].date)),
-                              Text(
-                                DateTimeConvert.formatTimeOfDay(todo.tasks[index].time),
-                              )
-                            ],
+                  padding: const EdgeInsets.all(25.0),
+                  child: Column(
+                    children: [
+                      SearchBox(searchController: todo.searchController),
+                      SizedBox(height: 10),
+                      Expanded(
+                        child: ListView.builder(
+                          itemBuilder: (context, index) => GestureDetector(
+                            onTap: () {
+                              showMainCustomDialog(
+                                  context: context, index: index);
+                            },
+                            onLongPress: () {
+                              showEditDialog(
+                                  context: context,
+                                  todo: todo,
+                                  index: index,
+                                  saveTask: saveTask);
+                            },
+                            onDoubleTap: () {
+                              todo.changeStatus(index);
+                            },
+                            child: Card(
+                              color: todo.tasks[index].isDone
+                                  ? Colors.greenAccent
+                                  : Colors.red,
+                              child: ListTile(
+                                leading: todo.tasks[index].photoPath.isNotEmpty
+                                    ? Image.file(
+                                        File(todo.tasks[index].photoPath),
+                                        width: 50,
+                                        height: 50,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Icon(FontAwesome5.hotdog),
+                                title: Text(todo.tasks[index].task),
+                                trailing: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(DateTimeConvert.formatDate(
+                                        todo.tasks[index].date)),
+                                    Text(
+                                      DateTimeConvert.formatTimeOfDay(
+                                          todo.tasks[index].time),
+                                    )
+                                  ],
+                                ),
+                                subtitle: Text(todo.tasks[index].description),
+                              ),
+                            ),
                           ),
-                          subtitle: Text(todo.tasks[index].description),
+                          itemCount: todo.tasks.length,
                         ),
                       ),
-                    ),
-                    itemCount: todo.tasks.length,
+                    ],
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(25),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SearchBox(searchController: todo.searchController),
+                      SizedBox(
+                        height: 150,
+                      ),
+                      Image.asset(
+                        imageLink,
+                        scale: 2,
+                      ),
+                      Text(nodata),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          )
-              : Padding(
-            padding: const EdgeInsets.all(25),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SearchBox(searchController: todo.searchController),
-                SizedBox(
-                  height: 150,
-                ),
-                Image.asset(
-                  imageLink,
-                  scale: 2,
-                ),
-                Text(nodata),
-              ],
-            ),
-          ),
         );
       },
     );
   }
 }
-
-
-

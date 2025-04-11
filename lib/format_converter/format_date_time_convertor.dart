@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-mixin  formatConvertor on StatelessWidget {
+mixin  formatConvertor <T extends StatefulWidget> on State<T> {
 
 String formatTimeOfDay(TimeOfDay time) {
   final now = DateTime.now();

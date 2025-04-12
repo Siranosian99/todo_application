@@ -51,7 +51,11 @@ class _ArchiveScreenState extends State<ArchiveScreen> with formatConvertor{
                   onPressed: ()  {
                     todo.toggleAuthArchive();
                     print(todo.authArchive);
-                  }):Text("NO"),
+                  }):IconButton(onPressed: (){
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Active Your Screen Lock to use AUTH in App')),
+              );
+            }, icon:Icon(Icons.security_rounded)),
 
             ],
           ),

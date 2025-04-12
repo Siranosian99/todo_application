@@ -66,7 +66,11 @@ class _MainCreateState extends State<MainCreate>
                       todo.toggleAuthApp();
                       print(todo.requiresAuth);
                     })
-                : Text("NO"),
+                :IconButton(onPressed: (){
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Active Your Screen Lock to use AUTH in App')),
+              );
+            }, icon:Icon(Icons.security_rounded)),
             automaticallyImplyLeading: false,
             title: Text(titleTxt),
             actions: [

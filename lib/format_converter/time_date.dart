@@ -5,8 +5,8 @@ class DateAndTime {
   TimeOfDay selectedTime = TimeOfDay.now();
 
   /// Date
-  DateTime initial = DateTime(2000);
-  DateTime last = DateTime(2025);
+  DateTime initial = DateTime(2024);
+  DateTime last = DateTime(2100);
 
   Future displayDatePicker(
       BuildContext context, TextEditingController dateController) async {

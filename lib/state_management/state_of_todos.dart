@@ -21,7 +21,7 @@ class TodoState extends ChangeNotifier {
   bool data = false;
   List<TodoModel> archive_tasks = [];
   bool checkTheme = false;
-  int id = 0;
+   int? id;
   int index = 0;
   String recognizedText = '';
   bool requiresAuth = false;
@@ -121,10 +121,10 @@ class TodoState extends ChangeNotifier {
     loadTasks(); // Reset tasks list to original state
   }
 
-  int generateUniqueId() {
-    id = DateTime.now().millisecondsSinceEpoch.remainder(100000);
-    return id;
-  }
+  // int generateUniqueId() {
+  //   id = DateTime.now().millisecondsSinceEpoch.remainder(100000);
+  //   return id;
+  // }
 
   void searchData(String query) async {
     List<String>? taskList = prefs?.getStringList('tasks');
@@ -144,8 +144,13 @@ class TodoState extends ChangeNotifier {
   Future<void> addToList(TodoModel task)async {
     // tasks.add(task);
     // saveTasks();
-   await TodoDatabase.insertNote(task);
+    id = await TodoDatabase.insertNote(task);
+   // Now you can pass this ID into other methods
+   doSomethingWithId(id!);
     notifyListeners();
+  }
+  void doSomethingWithId(int id) {
+    print("Doing something with ID: $id");
   }
 
   void addToArchive(TodoModel task, int index) {
@@ -245,7 +250,7 @@ class TodoState extends ChangeNotifier {
             .cancel(currentTask.id.hashCode);
 
         NotificationMethod.scheduleNotification(
-            updatedTask.id, scheduledTime, updatedTask.task);
+            updatedTask.id ?? 0, scheduledTime, updatedTask.task);
 
         saveTasks();
         notifyListeners();

@@ -6,6 +6,7 @@ import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_application/logics/authenticator.dart';
+import 'package:todo_application/model/todo_model.dart';
 import 'package:todo_application/show_dialog/show_dailog_main.dart';
 import 'package:todo_application/storage_database/sqflite_database.dart';
 import 'package:todo_application/widgets/switch_themeslottie.dart';
@@ -29,7 +30,7 @@ class MainCreate extends StatefulWidget {
 
 class _MainCreateState extends State<MainCreate>
     with ShowMainDialog, ShowEditDialog {
-  int selectedIndex = 0; // Updated variable name for consistency
+  late int id; // Updated variable name for consistency
   Color tColor = Colors.white;
   Color fColor = Colors.black;
   String nodata = "There is No Tasks";
@@ -99,7 +100,7 @@ class _MainCreateState extends State<MainCreate>
                     child: SingleChildScrollView(
                       child: BottomSheetColumn(
                         index: -1,
-                        id: todo.id,
+                        id: todo.id?? 0,
                         descpController: todo.descpController,
                         taskController: todo.taskController,
                         dateController: todo.dateController,

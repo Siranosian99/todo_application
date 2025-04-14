@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TodoModel {
-  int id;
+  int? id;
   String photoPath;
   String task;         // Task description
   String description;  // Description of the task
@@ -11,7 +11,7 @@ class TodoModel {
 
  TodoModel({
     this.photoPath='',
-    this.id=0,
+    this.id,
     this.task = '',    // Default task description is empty
     this.description = '', // Default description is empty
     required this.date,   // Date is required

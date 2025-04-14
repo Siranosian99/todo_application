@@ -285,13 +285,13 @@ class _BottomSheetColumnState extends State<BottomSheetColumn> {
                     // Save the photo path
                     isDone: false, // Assuming new tasks are initially not done
                   );
-                  await TodoDatabase.insertNote(newTask);
+                  await todo.addToList(newTask);
                   NotificationMethod.scheduleNotificationFromInput(
                       widget.id,
                       date_time.selectedDate,
                       date_time.selectedTime,
                       widget.taskController.text);
-                  todo.generateUniqueId();
+                  // todo.generateUniqueId();
                   Navigator.pop(context);
                   TextFieldRemover().removeTextFields(
                       widget.taskController,

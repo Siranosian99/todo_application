@@ -27,7 +27,9 @@ class TodoDatabase {
   // CREATE
   static Future<int> insertNote(TodoModel todo) async {
     final dbClient = await db;
-    return await dbClient.insert('todo', todo.toJson());
+    int auto_id=await dbClient.insert('todo', todo.toJson());
+    return auto_id;
+
   }
 
 // READ

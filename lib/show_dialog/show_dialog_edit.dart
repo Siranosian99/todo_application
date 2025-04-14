@@ -54,7 +54,7 @@ mixin ShowEditDialog<T extends StatefulWidget> on State<T> {
                                     child: EditBottomSheet(
                                       photoPath: todo.tasks[index].photoPath,
                                       index: index,
-                                      id: todo.tasks[index].id,
+                                      id: todo.tasks[index].id ?? 0,
                                       descpController: todo.descpController,
                                       taskController: todo.taskController,
                                       dateController: todo.dateController,

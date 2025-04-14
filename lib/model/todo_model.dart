@@ -28,7 +28,7 @@ class TodoModel {
       'description': description,                 // Description of the task
       'date': date.toIso8601String(),         // Convert DateTime to ISO 8601 String
       'time': '${time.hour}:${time.minute}', // Convert TimeOfDay to 'HH:MM' String
-      'isDone': isDone,
+      'isDone': isDone ? 1 : 0,
     };
   }
 
@@ -44,7 +44,7 @@ class TodoModel {
         hour: int.parse(json['time'].split(':')[0]),      // Parse hour part from 'HH:MM'
         minute: int.parse(json['time'].split(':')[1]),    // Parse minute part from 'HH:MM'
       ),
-      isDone: json['isDone'],                             // Get completion status
+      isDone: json['isDone']==1,                             // Get completion status
     );
   }
   @override

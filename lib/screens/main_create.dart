@@ -7,6 +7,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_application/logics/authenticator.dart';
 import 'package:todo_application/show_dialog/show_dailog_main.dart';
+import 'package:todo_application/storage_database/sqflite_database.dart';
 import 'package:todo_application/widgets/switch_themeslottie.dart';
 import '../format_converter/date_time_convertor.dart';
 import '../logics/textfield_remover.dart';
@@ -48,6 +49,8 @@ class _MainCreateState extends State<MainCreate>
   void initState() {
     super.initState();
     isLocked();
+    TodoDatabase.initDB();
+    TodoDatabase.getNotes();
   }
 
   @override

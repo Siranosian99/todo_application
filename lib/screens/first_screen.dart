@@ -54,7 +54,7 @@ class _FirstScreenState extends State<FirstScreen> {
           TextButton(
               onPressed: () async{
                 bool isAuthenticated = await AuthService.authenticate( Provider.of<TodoState>(context,listen: false).requiresAuth);
-              if ((isAuthenticated && checker) ||(!isAuthenticated && !checker)) {
+              if ((isAuthenticated && !checker) ||(isAuthenticated && checker) ||(!isAuthenticated && !checker)) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -62,7 +62,7 @@ class _FirstScreenState extends State<FirstScreen> {
                   ),
                 );
               }
-
+              print("${(isAuthenticated && !checker) ||(isAuthenticated && checker) ||(!isAuthenticated && checker)}");
               },
               child: Row(
                 mainAxisSize: MainAxisSize.min,

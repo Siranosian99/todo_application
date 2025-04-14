@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_application/logics/textfield_remover.dart';
+import 'package:todo_application/storage_database/sqflite_database.dart';
 import 'package:todo_application/widgets/textFormAddTask.dart';
 import '../format_converter/time_date.dart';
 import 'alert_camera_gallery.dart';
@@ -272,7 +273,7 @@ class _BottomSheetColumnState extends State<BottomSheetColumn> {
               height: size,
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async{
                 if (_formKey.currentState!.validate()) {
                   final newTask = TodoModel(
                     id: widget.id,
@@ -284,7 +285,7 @@ class _BottomSheetColumnState extends State<BottomSheetColumn> {
                     // Save the photo path
                     isDone: false, // Assuming new tasks are initially not done
                   );
-                  todo.addToList(newTask);
+                  await TodoDatabase.insertNote(newTask);
                   NotificationMethod.scheduleNotificationFromInput(
                       widget.id,
                       date_time.selectedDate,

@@ -11,6 +11,7 @@ import '../screens/main_create.dart';
 import 'dart:convert';
 import '../model/todo_model.dart';
 import '../screens/archive_screen.dart';
+import '../storage_database/sqflite_database.dart';
 
 class TodoState extends ChangeNotifier {
   String networkImageUrl = 'images/img.jpg';
@@ -62,7 +63,7 @@ class TodoState extends ChangeNotifier {
   Future<void> changeIndex(int index, PageController pageController) async {
     if (index == 1) {
       bool isAuthenticated = await AuthService.authenticate(authArchive);
-      if ((isAuthenticated && checker)||(!isAuthenticated && !checker)) {
+      if ((isAuthenticated && !checker)||(isAuthenticated && checker)||(!isAuthenticated && !checker)) {
         // Change the page using the PageController
         pageController.jumpToPage(index);
         selectedIndex = index;
@@ -140,9 +141,10 @@ class TodoState extends ChangeNotifier {
     }
   }
 
-  void addToList(TodoModel task) {
-    tasks.add(task);
-    saveTasks();
+  Future<void> addToList(TodoModel task)async {
+    // tasks.add(task);
+    // saveTasks();
+   await TodoDatabase.insertNote(task);
     notifyListeners();
   }
 
@@ -154,8 +156,9 @@ class TodoState extends ChangeNotifier {
   }
 
   void removeFromList(int index) {
-    tasks.removeAt(index);
-    saveTasks();
+    // tasks.removeAt(index);
+    // saveTasks();
+    TodoDatabase.deleteNote(index);
     notifyListeners();
   }
 
@@ -191,12 +194,13 @@ class TodoState extends ChangeNotifier {
   }
 
   Future<void> loadTasks() async {
-    List<String>? taskList = prefs?.getStringList('tasks');
-    if (taskList != null) {
-      tasks = taskList
-          .map((task) => TodoModel.fromJson(json.decode(task)))
-          .toList();
-    }
+    // List<String>? taskList = prefs?.getStringList('tasks');
+    // if (taskList != null) {
+    //   tasks = taskList
+    //       .map((task) => TodoModel.fromJson(json.decode(task)))
+    //       .toList();
+    // }
+    tasks=await TodoDatabase.getNotes();
     notifyListeners();
   }
 

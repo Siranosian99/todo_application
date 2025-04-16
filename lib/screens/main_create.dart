@@ -89,7 +89,7 @@ class _MainCreateState extends State<MainCreate>
           floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add),
             onPressed: () {
-              print(checker);
+             /* print(checker);*/
               showModalBottomSheet(
                 isDismissible: true,
                 context: context,
@@ -143,6 +143,7 @@ class _MainCreateState extends State<MainCreate>
                             },
                             onDoubleTap: () {
                               todo.changeStatus(index);
+                              print("this the id pressed task:${todo.tasks[index].id}");
                             },
                             child: Card(
                               color: todo.tasks[index].isDone

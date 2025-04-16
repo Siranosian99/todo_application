@@ -31,7 +31,12 @@ class TodoDatabase {
     print("this id${auto_id}");
     return auto_id;
   }
-
+  static Future<int> insertArchive(TodoModel todo,int index) async {
+    final dbClient = await db;
+    int auto_id=await dbClient.insert('todo', todo.toJson());
+    print("this id${auto_id}");
+    return auto_id;
+  }
 // READ
   static Future<List<TodoModel>> getNotes() async {
     final dbClient = await db;

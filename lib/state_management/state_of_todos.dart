@@ -21,7 +21,7 @@ class TodoState extends ChangeNotifier {
   bool data = false;
   List<TodoModel> archive_tasks = [];
   bool checkTheme = false;
-  int? id;
+  // int? id;
   String recognizedText = '';
   bool requiresAuth = false;
   bool authArchive = true;
@@ -157,7 +157,6 @@ class TodoState extends ChangeNotifier {
     int newId = await TodoDatabase.insertNote(todo);
     todo.id = newId;
     tasks.add(todo);
-    print(todo.id);// adding the new todo to the list
     notifyListeners();
   }
 
@@ -167,16 +166,17 @@ class TodoState extends ChangeNotifier {
 
   void addToArchive(TodoModel task, int index) {
     archive_tasks.add(task);
+    TodoDatabase.insertArchive(task, index);
     saveArchiveTasks();
     removeFromList(index);
     notifyListeners();
   }
 
   void removeFromList(int index) {
-    // tasks.removeAt(index);
+    tasks.remove(tasks[index].id??0);
     // saveTasks();
-    TodoDatabase.deleteNote(index);
-    notifyListeners();
+    TodoDatabase.deleteNote(tasks[index].id?? 0);
+
   }
 
   void removeFromListArchive(int index) {

@@ -16,7 +16,7 @@ import '../state_management/state_of_todos.dart';
 class BottomSheetColumn extends StatefulWidget {
   BottomSheetColumn({
     Key? key,
-    required this.id,
+     this.id,
     required this.descpController,
     required this.taskController,
     required this.dateController,
@@ -31,7 +31,7 @@ class BottomSheetColumn extends StatefulWidget {
   final TextEditingController timeController;
   final String save_task;
   final int index;
-  final int id;
+   int? id;
 
   @override
   State<BottomSheetColumn> createState() => _BottomSheetColumnState();
@@ -287,7 +287,8 @@ class _BottomSheetColumnState extends State<BottomSheetColumn> {
                   );
                   await todo.addToList(newTask);
                   NotificationMethod.scheduleNotificationFromInput(
-                      widget.id,
+
+                      widget.id ?? 0,
                       date_time.selectedDate,
                       date_time.selectedTime,
                       widget.taskController.text);

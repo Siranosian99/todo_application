@@ -21,12 +21,11 @@ class TodoState extends ChangeNotifier {
   bool data = false;
   List<TodoModel> archive_tasks = [];
   bool checkTheme = false;
-   int? id;
-  int index = 0;
+  int? id;
   String recognizedText = '';
   bool requiresAuth = false;
   bool authArchive = true;
-  bool checker=false;
+  bool checker = false;
   String? photoPath;
   SharedPreferences? prefs;
   final TextEditingController searchController = TextEditingController();
@@ -38,6 +37,7 @@ class TodoState extends ChangeNotifier {
   TodoState() {
     _initialize();
   }
+
   Future<void> _initialize() async {
     await isLocked();
     await init();
@@ -48,13 +48,15 @@ class TodoState extends ChangeNotifier {
     await loadTasks();
     await loadArchiveTasks();
   }
+
   Future<void> init() async {
     prefs = await SharedPreferences.getInstance();
   }
 
-  Future<void> isLocked()async{
-    checker=await AuthService.isDeviceSecure();
+  Future<void> isLocked() async {
+    checker = await AuthService.isDeviceSecure();
   }
+
   void setSelectedIndex(int index) {
     selectedIndex = index;
     notifyListeners(); // Notify listeners when the index changes
@@ -63,7 +65,9 @@ class TodoState extends ChangeNotifier {
   Future<void> changeIndex(int index, PageController pageController) async {
     if (index == 1) {
       bool isAuthenticated = await AuthService.authenticate(authArchive);
-      if ((isAuthenticated && !checker)||(isAuthenticated && checker)||(!isAuthenticated && !checker)) {
+      if ((isAuthenticated && !checker) ||
+          (isAuthenticated && checker) ||
+          (!isAuthenticated && !checker)) {
         // Change the page using the PageController
         pageController.jumpToPage(index);
         selectedIndex = index;
@@ -141,14 +145,22 @@ class TodoState extends ChangeNotifier {
     }
   }
 
-  Future<void> addToList(TodoModel task)async {
-    // tasks.add(task);
-    // saveTasks();
-    id = await TodoDatabase.insertNote(task);
-   // Now you can pass this ID into other methods
-   doSomethingWithId(id!);
+  // Future<void> addToList(TodoModel task) async {
+  //   // tasks.add(task);
+  //   // saveTasks();
+  //   // id = await TodoDatabase.insertNote(task);
+  //   // Now you can pass this ID into other methods
+  //   doSomethingWithId(id!);
+  //   notifyListeners();
+  // }
+  Future<void> addToList(TodoModel todo) async {
+    int newId = await TodoDatabase.insertNote(todo);
+    todo.id = newId;
+    tasks.add(todo);
+    print(todo.id);// adding the new todo to the list
     notifyListeners();
   }
+
   void doSomethingWithId(int id) {
     print("Doing something with ID: $id");
   }
@@ -192,7 +204,6 @@ class TodoState extends ChangeNotifier {
   }
 
   Future<void> saveArchiveTasks() async {
-
     List<String> archiveTaskList =
         archive_tasks.map((task) => json.encode(task.toJson())).toList();
     prefs?.setStringList('archive_tasks', archiveTaskList);
@@ -205,7 +216,7 @@ class TodoState extends ChangeNotifier {
     //       .map((task) => TodoModel.fromJson(json.decode(task)))
     //       .toList();
     // }
-    tasks=await TodoDatabase.getNotes();
+    tasks = await TodoDatabase.getNotes();
     notifyListeners();
   }
 

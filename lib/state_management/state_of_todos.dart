@@ -173,9 +173,11 @@ class TodoState extends ChangeNotifier {
   }
 
   void removeFromList(int index) {
-    tasks.remove(tasks[index].id??0);
-    // saveTasks();
+    // tasks.remove(tasks[index].id??0);
+    tasks.removeAt(index);
+    saveTasks();
     TodoDatabase.deleteNote(tasks[index].id?? 0);
+    notifyListeners();
 
   }
 
@@ -209,16 +211,21 @@ class TodoState extends ChangeNotifier {
     prefs?.setStringList('archive_tasks', archiveTaskList);
   }
 
+  // Future<void> loadTasks() async {
+  //   List<String>? taskList = prefs?.getStringList('tasks');
+  //   if (taskList != null) {
+  //     tasks = taskList
+  //         .map((task) => TodoModel.fromJson(json.decode(task)))
+  //         .toList();
+  //   }
+  //   // tasks = await TodoDatabase.getNotes();
+  //   notifyListeners();
+  // }
   Future<void> loadTasks() async {
-    // List<String>? taskList = prefs?.getStringList('tasks');
-    // if (taskList != null) {
-    //   tasks = taskList
-    //       .map((task) => TodoModel.fromJson(json.decode(task)))
-    //       .toList();
-    // }
     tasks = await TodoDatabase.getNotes();
     notifyListeners();
   }
+
 
   Future<void> loadArchiveTasks() async {
     List<String>? archiveTaskList = prefs?.getStringList('archive_tasks');

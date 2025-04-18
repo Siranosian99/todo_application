@@ -50,8 +50,8 @@ class _MainCreateState extends State<MainCreate>
   void initState() {
     super.initState();
     isLocked();
-    TodoDatabase.initDB();
-    TodoDatabase.getNotes();
+    // TodoDatabase.initDB();
+    // TodoDatabase.getNotes();
   }
 
   @override

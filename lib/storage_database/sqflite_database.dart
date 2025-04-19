@@ -44,6 +44,12 @@ class TodoDatabase {
     return maps.map((map) => TodoModel.fromJson(map)).toList();
   }
 
+  static Future<List<TodoModel>> getArchivedNotes() async {
+    final dbClient = await db;
+    final List<Map<String, dynamic>> maps = await dbClient.query('todo');
+    return maps.map((map) => TodoModel.fromJson(map)).toList();
+  }
+
   // UPDATE
   static Future<int> updateNote(int id, TodoModel todo) async {
     final dbClient = await db;

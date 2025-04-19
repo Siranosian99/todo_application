@@ -183,7 +183,7 @@ class _EditBottomSheetState extends State<EditBottomSheet> {
                   photoPath: widget.photoPath,
                   isDone: false,
                 );
-                todo.updateTask(widget.index, newTask);
+                todo.updateTask(todo.tasks[widget.index].id ??0 , newTask);
                 // todo.generateUniqueId();
                 Navigator.pop(context);
                 widget.taskController.clear();

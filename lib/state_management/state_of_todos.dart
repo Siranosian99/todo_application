@@ -157,6 +157,7 @@ class TodoState extends ChangeNotifier {
     int newId = await TodoDatabase.insertNote(todo);
     todo.id = newId;
     tasks.add(todo);
+    loadTasks();
     notifyListeners();
   }
 
@@ -173,15 +174,18 @@ class TodoState extends ChangeNotifier {
   }
 
   void removeFromList(int index) {
-    tasks.remove(tasks[index].id??0);
+   final id = tasks[index].id ?? 0;
+   tasks.removeAt(index);
     // saveTasks();
-    TodoDatabase.deleteNote(tasks[index].id?? 0);
-
+    TodoDatabase.deleteNote(id);
+    notifyListeners();
   }
+
+
 
   void removeFromListArchive(int index) {
     archive_tasks.removeAt(index);
-    saveArchiveTasks();
+    // saveArchiveTasks();
     notifyListeners();
   }
 
@@ -216,8 +220,9 @@ class TodoState extends ChangeNotifier {
     //       .map((task) => TodoModel.fromJson(json.decode(task)))
     //       .toList();
     // }
-    tasks = await TodoDatabase.getNotes();
     notifyListeners();
+    tasks = await TodoDatabase.getNotes();
+
   }
 
   Future<void> loadArchiveTasks() async {
@@ -236,37 +241,42 @@ class TodoState extends ChangeNotifier {
     await saveAuthState();
   }
 
-  void updateTask(int index, TodoModel updatedTask) {
-    if (index >= 0 && index < tasks.length) {
-      TodoModel currentTask = tasks[index];
+  // void updateTask(int index, TodoModel updatedTask) {
+  //   if (index >= 0 && index < tasks.length) {
+  //     TodoModel currentTask = tasks[index];
+  //
+  //     // Create DateTime object for the updated task's scheduled notification
+  //     DateTime scheduledTime = DateTime(
+  //       updatedTask.date.year,
+  //       updatedTask.date.month,
+  //       updatedTask.date.day,
+  //       updatedTask.time.hour,
+  //       updatedTask.time.minute,
+  //     );
+  //
+  //     // Check if any changes were made
+  //     if (currentTask.task != updatedTask.task ||
+  //         currentTask.description != updatedTask.description ||
+  //         currentTask.date != updatedTask.date ||
+  //         currentTask.time != updatedTask.time ||
+  //         currentTask.photoPath != updatedTask.photoPath) {
+  //       tasks[index] = updatedTask;
+  //
+  //       NotificationMethod.flutterLocalNotificationsPlugin
+  //           .cancel(currentTask.id.hashCode);
+  //
+  //       NotificationMethod.scheduleNotification(
+  //           updatedTask.id ?? 0, scheduledTime, updatedTask.task);
+  //
+  //       saveTasks();
+  //       notifyListeners();
+  //     }
+  //   }
+  // }
+  Future<void> updateTask(int id,TodoModel todo)async {
+    TodoDatabase.updateNote(id, todo);
+    await loadTasks();
 
-      // Create DateTime object for the updated task's scheduled notification
-      DateTime scheduledTime = DateTime(
-        updatedTask.date.year,
-        updatedTask.date.month,
-        updatedTask.date.day,
-        updatedTask.time.hour,
-        updatedTask.time.minute,
-      );
-
-      // Check if any changes were made
-      if (currentTask.task != updatedTask.task ||
-          currentTask.description != updatedTask.description ||
-          currentTask.date != updatedTask.date ||
-          currentTask.time != updatedTask.time ||
-          currentTask.photoPath != updatedTask.photoPath) {
-        tasks[index] = updatedTask;
-
-        NotificationMethod.flutterLocalNotificationsPlugin
-            .cancel(currentTask.id.hashCode);
-
-        NotificationMethod.scheduleNotification(
-            updatedTask.id ?? 0, scheduledTime, updatedTask.task);
-
-        saveTasks();
-        notifyListeners();
-      }
-    }
   }
 
   void toggleAuthArchive() async {

@@ -157,7 +157,6 @@ class TodoState extends ChangeNotifier {
     int newId = await TodoDatabase.insertNote(todo);
     todo.id = newId;
     tasks.add(todo);
-    loadTasks();
     notifyListeners();
   }
 
@@ -174,18 +173,17 @@ class TodoState extends ChangeNotifier {
   }
 
   void removeFromList(int index) {
-   final id = tasks[index].id ?? 0;
-   tasks.removeAt(index);
+    final id=tasks[index].id??0;
+    tasks.removeAt(index);
     // saveTasks();
     TodoDatabase.deleteNote(id);
     notifyListeners();
+
   }
-
-
 
   void removeFromListArchive(int index) {
     archive_tasks.removeAt(index);
-    // saveArchiveTasks();
+    saveArchiveTasks();
     notifyListeners();
   }
 
@@ -220,9 +218,8 @@ class TodoState extends ChangeNotifier {
     //       .map((task) => TodoModel.fromJson(json.decode(task)))
     //       .toList();
     // }
-    notifyListeners();
     tasks = await TodoDatabase.getNotes();
-
+    notifyListeners();
   }
 
   Future<void> loadArchiveTasks() async {
@@ -273,10 +270,10 @@ class TodoState extends ChangeNotifier {
   //     }
   //   }
   // }
-  Future<void> updateTask(int id,TodoModel todo)async {
+  void updateTask(int id,TodoModel todo)async{
     TodoDatabase.updateNote(id, todo);
     await loadTasks();
-
+    notifyListeners();
   }
 
   void toggleAuthArchive() async {

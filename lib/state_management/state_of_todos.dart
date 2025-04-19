@@ -21,6 +21,7 @@ class TodoState extends ChangeNotifier {
   bool data = false;
   List<TodoModel> archive_tasks = [];
   bool checkTheme = false;
+
   // int? id;
   String recognizedText = '';
   bool requiresAuth = false;
@@ -131,18 +132,18 @@ class TodoState extends ChangeNotifier {
   // }
 
   void searchData(String query) async {
-    List<String>? taskList = prefs?.getStringList('tasks');
+    List<TodoModel> taskList = await TodoDatabase.getNotes();
     if (query.isEmpty) {
       await loadTasks();
     } else if (taskList != null) {
       tasks = taskList
-          .map((task) => TodoModel.fromJson(json.decode(task)))
           .where((task) =>
               task.task.toLowerCase().contains(query.toLowerCase()) ||
               task.description.toLowerCase().contains(query.toLowerCase()))
           .toList();
       notifyListeners();
     }
+    notifyListeners();
   }
 
   // Future<void> addToList(TodoModel task) async {
@@ -160,10 +161,6 @@ class TodoState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void doSomethingWithId(int id) {
-    print("Doing something with ID: $id");
-  }
-
   void addToArchive(TodoModel task, int index) {
     archive_tasks.add(task);
     TodoDatabase.insertArchive(task, index);
@@ -173,12 +170,11 @@ class TodoState extends ChangeNotifier {
   }
 
   void removeFromList(int index) {
-    final id=tasks[index].id??0;
+    final id = tasks[index].id ?? 0;
     tasks.removeAt(index);
     // saveTasks();
     TodoDatabase.deleteNote(id);
     notifyListeners();
-
   }
 
   void removeFromListArchive(int index) {
@@ -187,9 +183,10 @@ class TodoState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeStatus(int index) {
+  void changeStatus(int index) async {
     tasks[index].isDone = !tasks[index].isDone;
-    saveTasks();
+    await TodoDatabase.updateNote(
+        tasks[index].id ?? 0, tasks[index]); // If you have this method
     notifyListeners();
   }
 
@@ -238,7 +235,7 @@ class TodoState extends ChangeNotifier {
     await saveAuthState();
   }
 
-  // void updateTask(int index, TodoModel updatedTask) {
+  //  void updateTask(int index, TodoModel updatedTask) {
   //   if (index >= 0 && index < tasks.length) {
   //     TodoModel currentTask = tasks[index];
   //
@@ -270,9 +267,20 @@ class TodoState extends ChangeNotifier {
   //     }
   //   }
   // }
-  void updateTask(int id,TodoModel todo)async{
+  void updateTask(int id, TodoModel todo) async {
     TodoDatabase.updateNote(id, todo);
     await loadTasks();
+    DateTime scheduledTime = DateTime(
+      todo.date.year,
+      todo.date.month,
+      todo.date.day,
+      todo.time.hour,
+      todo.time.minute,
+    );
+    NotificationMethod.flutterLocalNotificationsPlugin.cancel(todo.id.hashCode);
+
+    NotificationMethod.scheduleNotification(
+        todo.id ?? 0, scheduledTime, todo.task);
     notifyListeners();
   }
 

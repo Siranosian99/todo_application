@@ -154,7 +154,7 @@ class _ArchiveScreenState extends State<ArchiveScreen> with formatConvertor{
                                 todo.changeArchiveStatus(index);
                               },
                               child: Card(
-                                color: todo.archive_tasks[index].isDone
+                                color: todo.archive_tasks[index].isDone ?? false
                                     ? Colors.green
                                     : Colors.red,
                                 child:  ListTile(

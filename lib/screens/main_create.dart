@@ -142,7 +142,7 @@ class _MainCreateState extends State<MainCreate>
                                   saveTask: saveTask);
                             },
                             onDoubleTap: () {
-                              todo.changeStatus(index);
+                              todo.changeStatus(todo.tasks[index].id ??0);
                               print("this the id pressed task:${todo.tasks[index].id}");
                             },
                             child: Card(

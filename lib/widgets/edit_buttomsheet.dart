@@ -42,7 +42,6 @@ class EditBottomSheet extends StatefulWidget {
 
 class _EditBottomSheetState extends State<EditBottomSheet> {
   double size = 20;
-  Picker picker = Picker();
   DateAndTime date_time = DateAndTime();
   ShowDialog showDialog = ShowDialog();
   final _formKey = GlobalKey<FormState>();
@@ -135,7 +134,7 @@ class _EditBottomSheetState extends State<EditBottomSheet> {
                   right: 10,
                   child: InkWell(
                     onTap: () {
-                      todo.pickImage(widget.index);
+                      todo.pickImage(widget.index,notify: true);
                     },
                     borderRadius: BorderRadius.circular(30),
                     splashColor: Colors.blue.withOpacity(0.5),
@@ -173,7 +172,7 @@ class _EditBottomSheetState extends State<EditBottomSheet> {
             TextFormWidgets(date_time: date_time, widget: widget),
             SizedBox(height: size),
             ElevatedButton(
-              onPressed: () {
+              onPressed: ()async {
                 final newTask = TodoModel(
                   id: widget.id,
                   task: widget.taskController.text,
@@ -184,14 +183,14 @@ class _EditBottomSheetState extends State<EditBottomSheet> {
                   isDone: false,
                 );
                 todo.updateTask(todo.tasks[widget.index].id ??0 , newTask);
+                todo.img= await todo.photoPath;
                 // todo.generateUniqueId();
-                Navigator.pop(context);
                 widget.taskController.clear();
                 widget.descpController.clear();
                 widget.timeController.clear();
                 widget.dateController.clear();
                 todo.clearImg();
-
+                Navigator.pop(context);
               },
               child: Text(widget.save_task),
             ),

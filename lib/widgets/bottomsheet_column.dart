@@ -23,6 +23,7 @@ class BottomSheetColumn extends StatefulWidget {
     required this.timeController,
     required this.save_task,
     required this.index,
+    required this.photoPath,
   }) : super(key: key);
 
   final TextEditingController descpController;
@@ -30,6 +31,7 @@ class BottomSheetColumn extends StatefulWidget {
   final TextEditingController dateController;
   final TextEditingController timeController;
   final String save_task;
+  final String photoPath;
   final int index;
    int? id;
 
@@ -39,7 +41,6 @@ class BottomSheetColumn extends StatefulWidget {
 
 class _BottomSheetColumnState extends State<BottomSheetColumn> {
   double size = 20;
-  Picker picker = Picker();
   DateAndTime date_time = DateAndTime();
   ShowDialog showDialog = ShowDialog();
   final _formKey = GlobalKey<FormState>();
@@ -281,7 +282,7 @@ class _BottomSheetColumnState extends State<BottomSheetColumn> {
                     date: date_time.selectedDate,
                     time: date_time.selectedTime,
                     description: widget.descpController.text,
-                    photoPath: todo.photoPath ?? '',
+                    photoPath:widget.photoPath,  //todo.photoPath ?? '',
                     // Save the photo path
                     isDone: false, // Assuming new tasks are initially not done
                   );

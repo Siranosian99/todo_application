@@ -45,7 +45,6 @@ class _MainCreateState extends State<MainCreate>
       checker;
     });
   }
-
   @override
   void initState() {
     super.initState();
@@ -56,6 +55,7 @@ class _MainCreateState extends State<MainCreate>
 
   @override
   Widget build(BuildContext context) {
+
     return Consumer<TodoState>(
       builder: (context, todo, child) {
         bool check = todo.checkData();
@@ -106,6 +106,7 @@ class _MainCreateState extends State<MainCreate>
                         dateController: todo.dateController,
                         timeController: todo.timeController,
                         save_task: saveTask,
+                        photoPath: todo.photoPath ?? '',
                       ),
                     ),
                   );
@@ -152,7 +153,7 @@ class _MainCreateState extends State<MainCreate>
                               child: ListTile(
                                 leading: todo.tasks[index].photoPath.isNotEmpty
                                     ? Image.file(
-                                        File(todo.tasks[index].photoPath),
+                                        File(todo.img ?? ''),
                                         width: 50,
                                         height: 50,
                                         fit: BoxFit.cover,

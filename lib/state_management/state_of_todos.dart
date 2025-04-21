@@ -32,6 +32,7 @@ class TodoState extends ChangeNotifier {
   bool checker = false;
   bool isChanging = false;
   String? photoPath;
+  String? img;
   SharedPreferences? prefs;
   final TextEditingController searchController = TextEditingController();
   final TextEditingController descpController = TextEditingController();
@@ -110,19 +111,19 @@ class TodoState extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> pickImage(int index, {bool notify = false}) async {
+    final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
-  Future<void> pickImage(int index) async {
-    final XFile? image =
-    await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
-
       photoPath = image.path;
-      notifyListeners();
       tasks[index].photoPath = photoPath!;
-      isChanging = true;
 
+      if (notify) {
+        notifyListeners();
+      }
     }
   }
+
 
   void checkThemes(bool value) {
     checkTheme = value;

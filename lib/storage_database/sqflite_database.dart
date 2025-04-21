@@ -54,7 +54,7 @@ class TodoDatabase {
   static Future<int> updateNote(int id, TodoModel todo) async {
     final dbClient = await db;
     return await dbClient
-        .update('todo', todo.toJson(), where: 'id = ?', whereArgs: [id]);
+        .update('todo', todo.toJson(), where: 'id = ?', whereArgs: [todo.id]);
   }
 
   // DELETE

@@ -21,12 +21,16 @@ class TodoState extends ChangeNotifier {
   bool data = false;
   List<TodoModel> archive_tasks = [];
   bool checkTheme = false;
+  bool isDoneC = false;
+
+  int get flag => isDoneC ? 1 : 0;
 
   // int? id;
   String recognizedText = '';
   bool requiresAuth = false;
   bool authArchive = true;
   bool checker = false;
+  bool isChanging = false;
   String? photoPath;
   SharedPreferences? prefs;
   final TextEditingController searchController = TextEditingController();
@@ -106,13 +110,17 @@ class TodoState extends ChangeNotifier {
     notifyListeners();
   }
 
+
   Future<void> pickImage(int index) async {
     final XFile? image =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
+
       photoPath = image.path;
       notifyListeners();
       tasks[index].photoPath = photoPath!;
+      isChanging = true;
+
     }
   }
 
@@ -185,8 +193,8 @@ class TodoState extends ChangeNotifier {
 
   void changeStatus(int index) async {
     tasks[index].isDone = !tasks[index].isDone;
-    await TodoDatabase.updateNote(
-        tasks[index].id ?? 0, tasks[index]); // If you have this method
+    // await TodoDatabase.updateNote(
+    //     tasks[index].id ?? 0, tasks[index]); // If you have this method
     notifyListeners();
   }
 

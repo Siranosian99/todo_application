@@ -18,7 +18,6 @@ class TodoModel {
     required this.time,   // Time is required
     this.isDone = false   // Default isDone status is false (not done)
   });
-
   // Method to convert TodoModel object to JSON format for serialization
   Map<String, dynamic> toJson() {
     return {

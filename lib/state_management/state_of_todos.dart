@@ -31,8 +31,8 @@ class TodoState extends ChangeNotifier {
   bool authArchive = true;
   bool checker = false;
   bool isChanging = false;
+  bool isListed=false;
   String? photoPath;
-  String? img;
   SharedPreferences? prefs;
   final TextEditingController searchController = TextEditingController();
   final TextEditingController descpController = TextEditingController();
@@ -111,20 +111,17 @@ class TodoState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> pickImage(int index, {bool notify = false}) async {
+  Future<void> pickImage(int index) async {
     final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (image != null) {
       photoPath = image.path;
+      notifyListeners();
+      if(isChanging)
       tasks[index].photoPath = photoPath!;
-
-      if (notify) {
-        notifyListeners();
-      }
+      notifyListeners();
     }
   }
-
-
   void checkThemes(bool value) {
     checkTheme = value;
     saveThemeState();
@@ -299,6 +296,7 @@ class TodoState extends ChangeNotifier {
     await saveAuthStateArch();
   }
 
+
   Future<void> loadAuthState() async {
     requiresAuth = prefs?.getBool('requiresAuth') ?? false;
     notifyListeners();
@@ -317,6 +315,16 @@ class TodoState extends ChangeNotifier {
     await prefs?.setBool('requiresAuth', requiresAuth);
   }
 
+  Future<void> saveViewState() async {
+    if (prefs == null) return;
+    await prefs!.setBool('ViewState', isListed);
+  }
+
+  Future<void> loadViewState() async {
+    if (prefs == null) return;
+    isListed = prefs!.getBool('ViewState') ?? false;
+    notifyListeners();
+  }
   Future<void> saveThemeState() async {
     if (prefs == null) return;
     await prefs!.setBool('ThemeState', checkTheme);
@@ -327,4 +335,9 @@ class TodoState extends ChangeNotifier {
     checkTheme = prefs!.getBool('ThemeState') ?? false;
     notifyListeners();
   }
+  void checkView(){
+    isListed= !isListed;
+    notifyListeners();
+  }
+
 }

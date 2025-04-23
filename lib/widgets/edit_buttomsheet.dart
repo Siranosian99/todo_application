@@ -52,10 +52,10 @@ class _EditBottomSheetState extends State<EditBottomSheet> {
     getFirstData();
   }
 
-  void getFirstData(){
+  void getFirstData() {
     final todo = context.read<TodoState>().tasks[widget.index];
     widget.taskController.text = todo.task;
-    widget.photoPath=todo.photoPath;
+    widget.photoPath = todo.photoPath;
     widget.descpController.text = todo.description;
     widget.dateController.text = DateTimeConvert.formatDate(todo.date);
     widget.timeController.text = DateTimeConvert.formatTimeOfDay(todo.time);
@@ -81,22 +81,21 @@ class _EditBottomSheetState extends State<EditBottomSheet> {
   Widget build(BuildContext context) {
     return Consumer<TodoState>(builder: (context, todo, child) {
       return Form(
-        key:_formKey,
+        key: _formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             CustomCloseButton(
               onPressed: () {
+                todo.clearImg();
                 widget.taskController.clear();
                 widget.descpController.clear();
                 widget.timeController.clear();
                 widget.dateController.clear();
-                todo.clearImg();
                 Navigator.pop(context);
               },
             ),
-
             Stack(
               alignment: Alignment.center,
               children: [
@@ -117,15 +116,16 @@ class _EditBottomSheetState extends State<EditBottomSheet> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15),
-                    child: widget.photoPath != null && widget.photoPath.isNotEmpty
-                        ? Image.file(
-                      File(widget.photoPath),
-                      fit: BoxFit.cover,
-                    )
-                        : Image.asset(
-                      todo.networkImageUrl,
-                      fit: BoxFit.cover,
-                    ),
+                    child:
+                        widget.photoPath != null && widget.photoPath.isNotEmpty
+                            ? Image.file(
+                                File(widget.photoPath),
+                                fit: BoxFit.cover,
+                              )
+                            : Image.asset(
+                                todo.networkImageUrl,
+                                fit: BoxFit.cover,
+                              ),
                   ),
                 ),
                 // Positioned floating button with animation
@@ -134,7 +134,7 @@ class _EditBottomSheetState extends State<EditBottomSheet> {
                   right: 10,
                   child: InkWell(
                     onTap: () {
-                      todo.pickImage(widget.index,notify: true);
+                      todo.pickImage(widget.index);
                     },
                     borderRadius: BorderRadius.circular(30),
                     splashColor: Colors.blue.withOpacity(0.5),
@@ -161,18 +161,27 @@ class _EditBottomSheetState extends State<EditBottomSheet> {
                 ),
               ],
             ),
-
             SizedBox(height: size),
-            TextFormWidgetTask(controller:widget.taskController,widget: widget,text:"Enter Your Task Here",icon:Icon(FontAwesome.table),),
+            TextFormWidgetTask(
+              controller: widget.taskController,
+              widget: widget,
+              text: "Enter Your Task Here",
+              icon: Icon(FontAwesome.table),
+            ),
             SizedBox(height: size),
-            TextFormWidgetTask(controller: widget.descpController,widget: widget,text:"Enter Your Description Here",icon:Icon(FontAwesome.tasks),),
+            TextFormWidgetTask(
+              controller: widget.descpController,
+              widget: widget,
+              text: "Enter Your Description Here",
+              icon: Icon(FontAwesome.tasks),
+            ),
             SizedBox(height: size),
             TextFormWidgetTime(date_time: date_time, widget: widget),
             SizedBox(height: size),
             TextFormWidgets(date_time: date_time, widget: widget),
             SizedBox(height: size),
             ElevatedButton(
-              onPressed: ()async {
+              onPressed: () async {
                 final newTask = TodoModel(
                   id: widget.id,
                   task: widget.taskController.text,
@@ -182,8 +191,8 @@ class _EditBottomSheetState extends State<EditBottomSheet> {
                   photoPath: widget.photoPath,
                   isDone: false,
                 );
-                todo.updateTask(todo.tasks[widget.index].id ??0 , newTask);
-                todo.img= await todo.photoPath;
+                todo.updateTask(todo.tasks[widget.index].id ?? 0, newTask);
+
                 // todo.generateUniqueId();
                 widget.taskController.clear();
                 widget.descpController.clear();
@@ -200,8 +209,6 @@ class _EditBottomSheetState extends State<EditBottomSheet> {
     });
   }
 }
-
-
 
 class TextFormWidgetTime extends StatelessWidget {
   const TextFormWidgetTime({

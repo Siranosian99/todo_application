@@ -40,7 +40,8 @@ mixin ShowEditDialog<T extends StatefulWidget> on State<T> {
                         IconButton(
                           icon: Icon(Icons.edit, color: Colors.blue),
                           onPressed: () {
-                            Navigator.pop(context); // Close the dialog
+                            Navigator.pop(context);
+                            // Close the dialog
                             showModalBottomSheet(
                               enableDrag: false,
                               isDismissible: false,
@@ -52,7 +53,7 @@ mixin ShowEditDialog<T extends StatefulWidget> on State<T> {
                                       MediaQuery.of(context).viewInsets,
                                   child: SingleChildScrollView(
                                     child: EditBottomSheet(
-                                      photoPath: todo.tasks[index].photoPath,
+                                      photoPath: todo.photoPath ?? '',
                                       index: index,
                                       id: todo.tasks[index].id ?? 0,
                                       descpController: todo.descpController,
@@ -65,7 +66,6 @@ mixin ShowEditDialog<T extends StatefulWidget> on State<T> {
                                 );
                               },
                             ).whenComplete(() {
-// This runs when the bottom sheet is closed by the back button or other means
                               todo.taskController.clear();
                               todo.descpController.clear();
                               todo.timeController.clear();

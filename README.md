@@ -4,17 +4,47 @@ Todo Application
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+# ✅ TodoFy
 
-A few resources to get you started if this is your first Flutter project:
+**TodoFy** is a modern and feature-rich Todo App built with **Flutter**. It combines optional Firebase authentication, offline task storage using **Sqflite**, and clean state management with **Provider**. It also includes advanced features like OCR-based task creation from images.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🚀 Features
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- 🔐 **Optional Authentication**
+  - Uses Firebase Authentication
+  - Automatically enabled if the device has biometric or system authentication
 
+- 🗂️ **Task Management**
+  - Add, edit, delete, and archive tasks
+  - Tasks are saved locally using **Sqflite**
+
+- 🖼️ **Image-to-Text Task Creation**
+  - Pick an image from the gallery
+  - Extract text using OCR and convert it into a task automatically
+
+- 🌙 **Dark & Light Theme**
+  - Switch between themes
+  - Theme preference is saved using SharedPreferences
+
+- 🧠 **State Management**
+  - Efficient and scalable state handling with **Provider**
+
+- 🔄 **View Switching**
+  - Easily toggle between **List View** and **Grid View** layouts
+
+## 🧪 Tech Stack
+
+| Technology         | Description                         |
+|--------------------|-------------------------------------|
+| Flutter            | Cross-platform UI toolkit           |
+| Provider           | State management                    |
+| Sqflite            | Local task storage                  |
+| Firebase Auth      | Optional user authentication        |
+| SharedPreferences  | Theme and settings persistence      |
+| Image Picker       | Select images from gallery          |
+| Google ML Kit / Tesseract | OCR for image-to-text conversion |
+
+## 📸 Screenshots
 
 
 

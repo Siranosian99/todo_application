@@ -1,7 +1,3 @@
-# todo_application
-
-Todo Application
-
 ## Getting Started
 
 # ✅ TodoFy
